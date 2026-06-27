@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from schemas.application_schema import Enterapplication
-from database import save_application, show_applications
+from database import save_application, show_applications,update_application_status,delete_application
 
 router = APIRouter()
 
@@ -12,3 +12,13 @@ def enterApp (application : Enterapplication):
 @router.get("/showApplications")
 def showApps():
     return{'applications': show_applications()}
+
+@router.put("/updateApplication")
+def updateApplication(appId :int,newStatus :int):
+    update_application_status(appId,newStatus)
+    return{"message":"updated"}
+
+@router.delete("/deleteApplication/{appId}")
+def deleteApp(appId :int):
+    delete_application(appId)
+    return{'message':'application Deleted'}
