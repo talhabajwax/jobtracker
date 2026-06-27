@@ -25,6 +25,9 @@ def save_user(email, password_hash):
 
 #companies
 def save_company(name,website,location):
+  conn = None
+  cursor = None
+  try:
     conn = mysql.connector.connect(**jobtracker_db)
     cursor = conn.cursor()
     query ='''INSERT INTO companies (name, website,location)
@@ -32,8 +35,13 @@ def save_company(name,website,location):
     params=(name, website,location)
     cursor.execute(query,params)
     conn.commit()
-    cursor.close()
-    conn.close()
+  except Exception as e:
+      return{e}  
+  finally:
+    if cursor is not None :
+     cursor.close()
+    if conn is not None: 
+     conn.close()
     
 def delete_company(companyId):
     conn = mysql.connector.connect(**jobtracker_db)
@@ -47,6 +55,9 @@ def delete_company(companyId):
     conn.close()
     
 def update_company(companyName,companyLocation,companySite,companyId):
+  conn = None
+  cursor = None
+  try:
     conn = mysql.connector.connect(**jobtracker_db)
     cursor = conn.cursor()
     query= """update companies set name=(%s),location=(%s),website=(%s) where id = (%s)
@@ -54,20 +65,36 @@ def update_company(companyName,companyLocation,companySite,companyId):
     params=(companyName,companyLocation,companySite,companyId)
     cursor.execute(query,params)
     conn.commit()
-    cursor.close()
-    conn.close()
+    
+
+  except Exception as e:
+      return e
+  finally:
+    if cursor is not None :
+     cursor.close()
+    if conn is not None: 
+     conn.close()
     
        
-def show_company():        
+def show_company(): 
+  conn = None
+  cursor = None    
+  try:   
     conn = mysql.connector.connect(**jobtracker_db)
     cursor = conn.cursor()
     query= """select*from companies order by id desc
     """
     cursor.execute(query,)
     data = cursor.fetchall()
-    cursor.close()
-    conn.close()
     return(data)
+  except Exception as e:
+      return e
+  finally:
+    if cursor is not None :
+     cursor.close()
+    if conn is not None: 
+     conn.close()
+    
     
     
        
