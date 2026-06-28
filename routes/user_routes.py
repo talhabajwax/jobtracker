@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from schemas.user_schema import CreateUser,login
+from schemas.user_schema import CreateUser,loginSchema
 from passlib.context import CryptContext
 from database import save_user,login
 from authentication.auth import create_access_token
@@ -20,7 +20,7 @@ def create_user(user: CreateUser):
    
     return {"message" : response}
 
-@router.post("/login")
+@router.post("/loggingIn")
 def loggingIn(user :login):
     response = login(user.email)
     if response is None :
