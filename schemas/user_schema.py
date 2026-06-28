@@ -1,6 +1,10 @@
 
-from pydantic import BaseModel
+from pydantic import BaseModel,StringConstraints,EmailStr
+from typing import Annotated
+
+CleanText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=10)]
 
 class CreateUser(BaseModel):
-    email: str
-    password: str
+    email: EmailStr
+    password: CleanText
+    

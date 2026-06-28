@@ -11,15 +11,35 @@ jobtracker_db = {
 
 #users
 def save_user(email, password_hash):
+  conn = None
+  cursor = None
+  try:
     conn = mysql.connector.connect(**jobtracker_db)
     cursor = conn.cursor()
-    query ='''INSERT INTO users (email, password_hash)
-    VALUES (%s, %s) '''
-    params=(email,password_hash)
-    cursor.execute(query,params)
-    conn.commit()
-    cursor.close()
-    conn.close()
+    paramforemail = (email,)
+    existing_email_query = '''select email from users where email=%s
+    '''
+    cursor.execute(existing_email_query,paramforemail)
+    data = cursor.fetchone()
+    if data is  None:
+      
+     query ='''INSERT INTO users (email, password_hash)
+     VALUES (%s, %s) '''
+     params=(email,password_hash)
+     cursor.execute(query,params)
+     conn.commit()
+     return("user created")
+    else:
+        return("user exists")
+  except Exception as e:
+        return{e}  
+  finally:
+       if cursor is not None :
+        cursor.close()
+       if conn is not None: 
+        conn.close()
+        
+      
     
     
 
@@ -65,8 +85,6 @@ def update_company(companyName,companyLocation,companySite,companyId):
     params=(companyName,companyLocation,companySite,companyId)
     cursor.execute(query,params)
     conn.commit()
-    
-
   except Exception as e:
       return e
   finally:
@@ -147,3 +165,4 @@ def delete_application(application_id):
     conn.commit()
     cursor.close()
     conn.close()   
+    

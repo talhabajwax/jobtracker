@@ -8,12 +8,14 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 router = APIRouter()
 
+
+
 @router.post("/users/")
 def create_user(user: CreateUser):
     # Logic to create a user in the database
     password_hash = pwd_context.hash(user.password)
-    save_user(user.email,password_hash)
+    response=save_user(user.email,password_hash)
     
    
-    return {"message": "User created successfully"}
+    return {"message" : response}
     
