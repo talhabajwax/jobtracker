@@ -32,12 +32,31 @@ def save_user(email, password_hash):
     else:
         return("user exists")
   except Exception as e:
-        return{e}  
+        return (str(e))  
   finally:
        if cursor is not None :
         cursor.close()
        if conn is not None: 
         conn.close()
+        
+def login(email):
+     conn=None
+     cursor=None
+     try:
+      conn = mysql.connector.connect(**jobtracker_db)
+      cursor = conn.cursor()     
+      query = '''select id,password_hash from users where email=%s'''
+      params=(email,)
+      cursor.execute(query,params)
+      record = cursor.fetchone()
+      return(record)
+     except Exception as e:
+      return(str(e))  
+     finally:
+      if cursor is not None :
+        cursor.close()
+      if conn is not None: 
+       conn.close()
         
       
     
@@ -56,7 +75,7 @@ def save_company(name,website,location):
     cursor.execute(query,params)
     conn.commit()
   except Exception as e:
-      return{e}  
+      return (str(e))  
   finally:
     if cursor is not None :
      cursor.close()
