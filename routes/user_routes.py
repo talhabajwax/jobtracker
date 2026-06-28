@@ -1,7 +1,7 @@
 from fastapi import APIRouter
-from schemas.user_schema import CreateUser,loginSchema
+from schemas.user_schema import CreateUser,LoginRequest
 from passlib.context import CryptContext
-from database import save_user,login
+from database import save_user,login_user
 from authentication.auth import create_access_token
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -21,8 +21,8 @@ def create_user(user: CreateUser):
     return {"message" : response}
 
 @router.post("/loggingIn")
-def loggingIn(user :login):
-    response = login(user.email)
+def loggingIn(user :LoginRequest):
+    response = login_user(user.email)
     if response is None :
         return ("Invalid email or password")
     check=pwd_context.verify(user.password,response[1])

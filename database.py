@@ -39,7 +39,7 @@ def save_user(email, password_hash):
        if conn is not None: 
         conn.close()
         
-def login(email):
+def login_user(email):
      conn=None
      cursor=None
      try:
