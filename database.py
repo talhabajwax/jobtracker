@@ -152,14 +152,15 @@ def save_application(userid,companyid,statusid,jobtitle,appliedAt,jobUrl):
     cursor.close()
     conn.close()
     
-def show_applications():
+def show_applications(user_id):
     query="""select a.id,a.role_title,c.name as companyName,a.applied_date,s.name as appStatus from applications a
     join application_statuses s on a.status_id=s.id
-    join companies c on a.company_id=c.id
+    join companies c on a.company_id=c.id where a.user_id =%s
     order by a.id desc;"""
+    params=(user_id,)
     conn = mysql.connector.connect(**jobtracker_db)
     cursor = conn.cursor()
-    cursor.execute(query)
+    cursor.execute(query,params)
     data = cursor.fetchall()
     cursor.close()
     conn.close()
