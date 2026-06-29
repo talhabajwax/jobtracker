@@ -1,6 +1,8 @@
 from fastapi import APIRouter
 from schemas.company_schema import enterCompany
 from database import save_company,show_company,delete_company,update_company
+from authentication.auth import get_current_user
+from fastapi import Depends
 
 router = APIRouter()
 
@@ -10,7 +12,8 @@ def add_company(addCompany : enterCompany):
     return {'message':'Company successfully added'}
 
 @router.get("/showcompanies/")
-def showCompanies():
+def showCompanies(user_id = Depends(get_current_user)):
+  
     return{"companies":show_company()}
 
 @router.put("/updateCompany/{companyId}/")
