@@ -166,21 +166,21 @@ def show_applications(user_id):
     conn.close()
     return(data)
 
-def update_application_status(application_id, new_status_id):
+def update_application_status(application_id, new_status_id,user_id):
     conn = mysql.connector.connect(**jobtracker_db)
     cursor = conn.cursor()
-    query = "UPDATE applications SET status_id = %s WHERE id = %s"
-    params = (new_status_id, application_id)
+    query = "UPDATE applications SET status_id = %s WHERE id = %s and user_id=%s"
+    params = (new_status_id, application_id,user_id)
     cursor.execute(query, params)
     conn.commit()
     cursor.close()
     conn.close()
     
-def delete_application(application_id):
+def delete_application(application_id,userId):
     conn = mysql.connector.connect(**jobtracker_db)
     cursor = conn.cursor()
-    query = "UPDATE applications SET isActive=0,isDeleted=1 WHERE id = %s"
-    params = ( application_id,)
+    query = "UPDATE applications SET isActive=0,isDeleted=1 WHERE id = %s and user_id=%s"
+    params = ( application_id,userId)
     cursor.execute(query, params)
     conn.commit()
     cursor.close()

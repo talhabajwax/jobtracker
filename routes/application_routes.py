@@ -17,11 +17,11 @@ def showApps(user_id = Depends(get_current_user)):
 
 
 @router.put("/updateApplication")
-def updateApplication(appId :int,newStatus :int):
-    update_application_status(appId,newStatus)
+def updateApplication(appId :int,newStatus :int,user_id = Depends(get_current_user)):
+    update_application_status(appId,newStatus,user_id)
     return{"message":"updated"}
 
 @router.delete("/deleteApplication/{appId}")
-def deleteApp(appId :int):
-    delete_application(appId)
+def deleteApp(appId :int,user_id = Depends(get_current_user)):
+    delete_application(appId,user_id)
     return{'message':'application Deleted'}
