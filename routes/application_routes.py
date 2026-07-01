@@ -13,6 +13,8 @@ def save_application (application : Enterapplication,user_id = Depends(get_curre
     new_id=sa(user_id ,application.company_id,application.status_id,application.role_title,application.applied_date,application.job_url)
     if new_id == "Invalid Company":
         raise HTTPException(status_code=400, detail="Invalid Company")
+    if new_id == "Invalid Status":
+        raise HTTPException(status_code=400, detail="Invalid Status")
     if new_id == 'Duplicate Application':
         raise HTTPException(status_code=400, detail="Duplicate Application")
     if not new_id:
@@ -30,6 +32,8 @@ def show_applications(user_id = Depends(get_current_user)):
 @router.put("/updateApplication")
 def update_application_status(application_id :int,new_status_id :int,user_id = Depends(get_current_user)):
     is_updated=ups(application_id, new_status_id,user_id)
+    if is_updated == "Invalid Status":
+        raise HTTPException(status_code=400, detail="Invalid Status")
     if not is_updated:
         raise HTTPException(status_code=404, detail="Application Not Updated")
     return {"message": "Application Updated successfully"}

@@ -120,3 +120,22 @@ def duplicate_application(user_id,company_id,jobtitle):
      cursor.close()
     if conn is not None: 
      conn.close()
+     
+     
+def validate_status_id(status_id):
+   conn = None
+   cursor = None
+   try:
+    conn = connect_db()
+    cursor = conn.cursor()
+    query = "SELECT id FROM application_statuses WHERE id=%s "
+    params = (status_id,)
+    cursor.execute(query, params)
+    status=cursor.fetchone()
+    return(status)
+
+   finally:
+    if cursor is not None :
+     cursor.close()
+    if conn is not None: 
+     conn.close()
