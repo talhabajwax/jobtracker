@@ -1,12 +1,12 @@
 import mysql.connector
 
-jobtracker_db = {
-    'host': '127.0.0.1',
-    'user': 'root',
-    'password': 'root',
-    'port': 3306,
-    'database': 'job_tracker',
-}
+# jobtracker_db = {
+#     'host': '127.0.0.1',
+#     'user': 'root',
+#     'password': 'root',
+#     'port': 3306,
+#     'database': 'job_tracker',
+# }
 
 def connect_db():
     jobtracker_db = {

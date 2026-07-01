@@ -12,24 +12,33 @@ def save_company(name,website,location):
     params=(name, website,location)
     cursor.execute(query,params)
     conn.commit()
-  except Exception as e:
-      return (str(e))  
+    new_company_id=cursor.lastrowid
+    return(new_company_id)
+  
   finally:
     if cursor is not None :
      cursor.close()
     if conn is not None: 
      conn.close()
     
-def delete_company(companyId):
+def delete_company(companyId,user_id):
+  conn=None
+  cursor=None
+  try:
     conn = connect_db()
     cursor = conn.cursor()
-    query= """update companies set isActive=0,isDeleted=1 where id in ("%s")
+    query= """update companies set isActive=0,isDeleted=1 where id = %s and user_id=%s
     """
-    params=(companyId,)
+    params=(companyId,user_id)
     cursor.execute(query,params)
     conn.commit()
-    cursor.close()
-    conn.close()
+    affected_rows=cursor.rowcount
+    return(affected_rows)
+  finally:
+    if cursor is not None :
+     cursor.close()
+    if conn is not None: 
+     conn.close()
     
 def update_company(companyName,companyLocation,companySite,companyId):
   conn = None
@@ -42,8 +51,9 @@ def update_company(companyName,companyLocation,companySite,companyId):
     params=(companyName,companyLocation,companySite,companyId)
     cursor.execute(query,params)
     conn.commit()
-  except Exception as e:
-      return e
+    affected_rows=cursor.rowcount
+    return(affected_rows)
+ 
   finally:
     if cursor is not None :
      cursor.close()
@@ -51,19 +61,21 @@ def update_company(companyName,companyLocation,companySite,companyId):
      conn.close()
     
        
-def show_company(): 
+def show_company(user_id): 
   conn = None
   cursor = None    
   try:   
     conn = connect_db()
     cursor = conn.cursor()
-    query= """select*from companies order by id desc
+    query= """select c.name from applications a
+    join companies c on c.id=a.company_id
+    where a.user_id= %s
     """
-    cursor.execute(query,)
+    params=(user_id,)
+    cursor.execute(query,params)
     data = cursor.fetchall()
     return(data)
-  except Exception as e:
-      return e
+ 
   finally:
     if cursor is not None :
      cursor.close()
