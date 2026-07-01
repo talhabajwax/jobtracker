@@ -40,15 +40,15 @@ def delete_company(companyId,user_id):
     if conn is not None: 
      conn.close()
     
-def update_company(companyName,companyLocation,companySite,companyId):
+def update_company(companyName,companyLocation,companySite,companyId,user_id):
   conn = None
   cursor = None
   try:
     conn = connect_db()
     cursor = conn.cursor()
-    query= """update companies set name=(%s),location=(%s),website=(%s) where id = (%s)
+    query= """update companies set name=(%s),location=(%s),website=(%s) where id = (%s) and user_id=(%s)
     """
-    params=(companyName,companyLocation,companySite,companyId)
+    params=(companyName,companyLocation,companySite,companyId,user_id)
     cursor.execute(query,params)
     conn.commit()
     affected_rows=cursor.rowcount

@@ -25,8 +25,8 @@ def showCompanies(user_id = Depends(get_current_user)):
   
 
 @router.put("/updateCompany/{companyId}/")
-def updateApp(companyId :int,companyName:str,companySite:str,companyLocation:str):
-    update_company=uc(companyName, companyLocation, companySite, companyId)
+def updateApp(companyId :int,companyName:str,companySite:str,companyLocation:str,user_id = Depends(get_current_user)):
+    update_company=uc(companyName, companyLocation, companySite, companyId, user_id)
     if not update_company:
         raise HTTPException(status_code=404, detail="Company Not Updated")
     return {"message": "Company Updated successfully"}

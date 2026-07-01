@@ -14,8 +14,8 @@ def deleteCompany(company_id,user_id):
         return False
     return isDeleted
 
-def update_company(companyName,companyLocation,companySite,companyId):
-    isUpdated=uc(companyName,companyLocation,companySite,companyId)
+def update_company(companyName,companyLocation,companySite,companyId,user_id):
+    isUpdated=uc(companyName,companyLocation,companySite,companyId,user_id)
     if isUpdated == 0:
         return False
     return isUpdated
