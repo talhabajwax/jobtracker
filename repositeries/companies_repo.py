@@ -104,3 +104,22 @@ WHERE id = %s AND user_id = %s AND isActive = 1 AND isDeleted = 0;
             cursor.close()
         if conn is not None:
             conn.close()
+            
+
+def validate_company(company_id, user_id):
+    conn = None
+    cursor = None    
+    try:   
+        conn = connect_db()
+        cursor = conn.cursor()
+        query= """SELECT id FROM companies WHERE id = %s AND user_id = %s AND isActive = 1 AND isDeleted = 0;
+        """
+        params=(company_id, user_id)
+        cursor.execute(query, params)
+        data = cursor.fetchone()
+        return data
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()

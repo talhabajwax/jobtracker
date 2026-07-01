@@ -11,6 +11,8 @@ router = APIRouter()
 def save_application (application : Enterapplication,user_id = Depends(get_current_user)):
 
     new_id=sa(user_id ,application.company_id,application.status_id,application.role_title,application.applied_date,application.job_url)
+    if new_id == "Invalid Company":
+        raise HTTPException(status_code=400, detail="Invalid Company")
     if new_id == 'Duplicate Application':
         raise HTTPException(status_code=400, detail="Duplicate Application")
     if not new_id:

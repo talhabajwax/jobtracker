@@ -1,5 +1,6 @@
 from repositeries.application_repo import delete_application as da,save_application as sa,show_applications as SA,update_application_status as ups
 from repositeries.application_repo import get_application as ga,duplicate_application as da
+from repositeries.companies_repo import validate_company_id as vc
 
 def delete_application(app_id:int,user_id:int):
     rowCount=da(app_id,user_id)
@@ -9,6 +10,9 @@ def delete_application(app_id:int,user_id:int):
         return True
 
 def save_application(user_id,company_id,status_id,jobtitle,appliedAt,jobUrl):
+    validate_company=vc(company_id,user_id)
+    if not validate_company:
+        return "Invalid Company"
     duplicate=da(user_id,company_id,jobtitle)
     if duplicate:
         return 'Duplicate Application'
