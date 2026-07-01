@@ -102,3 +102,21 @@ def get_application(application_id,user_id):
      cursor.close()
     if conn is not None: 
      conn.close()
+
+def duplicate_application(user_id,company_id,jobtitle):
+   conn = None
+   cursor = None
+   try:
+    conn = connect_db()
+    cursor = conn.cursor()
+    query = "SELECT id FROM applications WHERE user_id=%s and company_id=%s and role_title=%s and isActive=1 and isDeleted=0"
+    params = (user_id,company_id,jobtitle)
+    cursor.execute(query, params)
+    application=cursor.fetchone()
+    return(application)
+
+   finally:
+    if cursor is not None :
+     cursor.close()
+    if conn is not None: 
+     conn.close()
