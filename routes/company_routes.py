@@ -8,8 +8,8 @@ from services.companies_service import showCompanies as sc,deleteCompany as dc,u
 router = APIRouter()
 
 @router.post("/company/")
-def add_company(addCompany : enterCompany):
-    save_company=SC(addCompany)
+def add_company(addCompany : enterCompany,user_id = Depends(get_current_user)):
+    save_company=SC(addCompany, user_id)
     if not save_company:
         raise HTTPException(status_code=500, detail="company Not Saved")
     return {"message": "Company Saved successfully",

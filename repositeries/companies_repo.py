@@ -1,15 +1,15 @@
 from database import connect_db
 
 
-def save_company(name,website,location):
+def save_company(name,website,location, user_id):
   conn = None
   cursor = None
   try:
     conn = connect_db()
     cursor = conn.cursor()
-    query ='''INSERT INTO companies (name, website,location)
-    VALUES (%s, %s,%s) '''
-    params=(name, website,location)
+    query ='''INSERT INTO companies (name, website,location, user_id)
+    VALUES (%s, %s,%s, %s) '''
+    params=(name, website,location,user_id)
     cursor.execute(query,params)
     conn.commit()
     new_company_id=cursor.lastrowid

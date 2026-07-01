@@ -2,8 +2,8 @@ from schemas.company_schema import enterCompany
 from repositeries.companies_repo import save_company as sc,delete_company as dc,update_company as uc,show_company as SC
 
 
-def saveCompany(company:enterCompany):
-    isSaved=sc(company.companyName,company.websiteName,company.locationName)
+def saveCompany(company:enterCompany,user_id):
+    isSaved=sc(company.companyName,company.websiteName,company.locationName, user_id)
     if isSaved ==  None:
         return False
     return isSaved
