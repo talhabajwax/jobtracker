@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from repositeries.companies_repo import show_company_by_id
 from schemas.company_schema import enterCompany
 from authentication.auth import get_current_user
 from fastapi import Depends
@@ -39,3 +40,9 @@ def deleteCompany(companyId :int,user_id = Depends(get_current_user)):
         raise HTTPException(status_code=404, detail="Company Not Found")
     return {"message": "company deleted successfully"}
     
+@router.get("/companies/{company_Id}")
+def showCompany(company_Id: int, user_id = Depends(get_current_user)):
+    company=show_company_by_id(company_Id, user_id)
+    if not company:
+        raise HTTPException(status_code=404, detail="Company Not Found")
+    return company

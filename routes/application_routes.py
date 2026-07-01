@@ -4,7 +4,7 @@ from authentication.auth import get_current_user
 from fastapi import Depends
 from services.application_service import delete_application as da,save_application as sa,show_applications as SA,update_application_status as ups
 from fastapi import HTTPException
-
+from services.application_service import get_application as ga
 router = APIRouter()
 
 @router.post("/application/")
@@ -36,3 +36,10 @@ def delete_application(appId :int,user_id = Depends(get_current_user)):
     if not is_deleted:
         raise HTTPException(status_code=404, detail="Application Not Found")
     return {"message": "Application deleted successfully"}
+
+@router.get("/Application/{application_Id}")
+def get_application(application_Id: int, user_id = Depends(get_current_user)):
+    application=ga(application_Id, user_id)
+    if not application:
+        raise HTTPException(status_code=404, detail="Application Not Found")
+    return application

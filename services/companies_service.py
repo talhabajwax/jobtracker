@@ -1,5 +1,5 @@
 from schemas.company_schema import enterCompany
-from repositeries.companies_repo import save_company as sc,delete_company as dc,update_company as uc,show_company as SC
+from repositeries.companies_repo import save_company as sc,delete_company as dc, show_company_by_id,update_company as uc,show_company as SC
 
 
 def saveCompany(company:enterCompany,user_id):
@@ -23,3 +23,10 @@ def update_company(companyName,companyLocation,companySite,companyId,user_id):
 def showCompanies(user_id):
     companies=SC(user_id)
     return companies
+
+def showCompany(company_Id, user_id):
+    company=show_company_by_id(company_Id, user_id)
+    if company is None:
+        return False
+    else:
+        return company

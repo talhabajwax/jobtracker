@@ -67,9 +67,11 @@ def show_company(user_id):
   try:   
     conn = connect_db()
     cursor = conn.cursor()
-    query= """select c.name from applications a
-    join companies c on c.id=a.company_id
-    where a.user_id= %s
+    query= """SELECT id, name, website, location, created_at
+FROM companies
+WHERE user_id = %s
+  AND isActive = 1
+  AND isDeleted = 0;
     """
     params=(user_id,)
     cursor.execute(query,params)
@@ -82,3 +84,23 @@ def show_company(user_id):
     if conn is not None: 
      conn.close()
     
+    
+def show_company_by_id(company_Id, user_id):
+    conn = None
+    cursor = None    
+    try:   
+        conn = connect_db()
+        cursor = conn.cursor()
+        query= """SELECT id, name, website, location, created_at
+FROM companies
+WHERE id = %s AND user_id = %s AND isActive = 1 AND isDeleted = 0;
+        """
+        params=(company_Id, user_id)
+        cursor.execute(query, params)
+        data = cursor.fetchone()
+        return data
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()

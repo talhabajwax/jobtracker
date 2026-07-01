@@ -84,3 +84,21 @@ def delete_application(application_id,user_id):
     if conn is not None: 
      conn.close()
      
+     
+def get_application(application_id,user_id):
+   conn = None
+   cursor = None
+   try:
+    conn = connect_db()
+    cursor = conn.cursor()
+    query = "SELECT * FROM applications WHERE id = %s and user_id=%s and isActive=1 and isDeleted=0"
+    params = ( application_id,user_id)
+    cursor.execute(query, params)
+    application=cursor.fetchone()
+    return(application)
+
+   finally:
+    if cursor is not None :
+     cursor.close()
+    if conn is not None: 
+     conn.close()
